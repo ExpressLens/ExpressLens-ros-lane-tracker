@@ -5,4 +5,5 @@
 	<node pkg="rosserial_python" type="serial_node.py" name="arduino_serial_node">
 	<param name="port" type="string" value="/dev/ttyACM0"/>
 	</node>
-	<node pkg="lane_detect_follower" type="lane_detector_node.py" name="lane_detect_follower_node" ou
+	<node pkg="lane_detect_follower" type="lane_detector_node.py" name="lane_detect_follower_node" output="screen"></node>
+</launch>
