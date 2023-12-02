@@ -1,4 +1,9 @@
 Original Authors
 ----------------
 
- * [Benja
+ * [Benjamin Pitzer] (benjamin.pitzer@bosch.com)
+
+Contributors
+------------
+
+ * [Russell Toris](http://users.wpi.edu/~rctoris/) (rctoris@wpi.edu)
