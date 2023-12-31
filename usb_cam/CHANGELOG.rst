@@ -13,4 +13,6 @@ Changelog for package usb_cam
 * add ROS Orphaned Package Maintainers to maintainer tag (`#69 <https://github.com/ros-drivers/usb_cam/issues/69>`_)
 * support for Kinetic / Ubuntu 16.04 (`#58 <https://github.com/ros-drivers/usb_cam/issues/58>`_)
   * replace use of deprecated functions in newer ffmpeg/libav versions
-    ffmpeg/libav 55.x (used in
+    ffmpeg/libav 55.x (used in ROS Kinetic) deprecated the avcodec_alloc_frame.
+* Add grey scale pixel format. (`#45 <https://github.com/ros-drivers/usb_cam/issues/45>`_)
+* add start/stop capture services (`#44 <https://github.com/ro
