@@ -20,4 +20,8 @@ Changelog for package usb_cam
   * up package.xml
   * add capture service
 
-* fix bug for byte count in a pixel (3 bytes not 24 bytes) (`#40 <https://github.com
+* fix bug for byte count in a pixel (3 bytes not 24 bytes) (`#40 <https://github.com/ros-drivers/usb_cam/issues/40>`_ )
+* Contributors: Daniel Seifert, Eric Zavesky, Kei Okada, Ludovico Russo, Russell Toris, honeytrap15
+
+0.3.4 (2015-08-18)
+------------------
