@@ -46,4 +46,8 @@ Changelog for package usb_cam
 * Contributors: Elias Mueggler, Russell Toris
 
 0.3.1 (2015-02-20)
-------------
+------------------
+* Merge pull request #32 from kmhallen/mono8
+  Publish YUVMONO10 images as mono8 instead of rgb8
+* Publish YUVMONO10 images as mono8 instead of rgb8
+* Contributors: Kevin Hallenbec
