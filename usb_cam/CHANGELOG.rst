@@ -50,4 +50,10 @@ Changelog for package usb_cam
 * Merge pull request #32 from kmhallen/mono8
   Publish YUVMONO10 images as mono8 instead of rgb8
 * Publish YUVMONO10 images as mono8 instead of rgb8
-* Contributors: Kevin Hallenbec
+* Contributors: Kevin Hallenbeck, Russell Toris
+
+0.3.0 (2015-01-26)
+------------------
+* Merge pull request #30 from mitchellwills/develop
+  Removed global state from usb_cam by encapsulating it inside an object
+* Made device n
