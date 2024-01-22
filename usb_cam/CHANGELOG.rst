@@ -56,4 +56,9 @@ Changelog for package usb_cam
 ------------------
 * Merge pull request #30 from mitchellwills/develop
   Removed global state from usb_cam by encapsulating it inside an object
-* Made device n
+* Made device name a std::string instead of const char*
+* Added usb_cam namespace
+* Added underscore sufix to class fields
+* Removed camera_ prefix from methods
+* Moved methods to parse pixel_format and io_method from string to UsbCam
+* Moved c
