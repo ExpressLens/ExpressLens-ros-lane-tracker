@@ -65,4 +65,6 @@ Changelog for package usb_cam
 * Cleaned up parameter assignment
 * Made set_v4l_parameters a non-static function
 * Moved set_v4l_parameters to UsbCam object
-*
+* Removed global state from usb_cam by encapsulating it inside an object
+  function and structions in usb_cam.h became public and everything else is private
+* Merge pull request #28 from mitchellwills/develop
