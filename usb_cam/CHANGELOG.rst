@@ -61,4 +61,8 @@ Changelog for package usb_cam
 * Added underscore sufix to class fields
 * Removed camera_ prefix from methods
 * Moved methods to parse pixel_format and io_method from string to UsbCam
-* Moved c
+* Moved camera_image_t struct to be private in UsbCam
+* Cleaned up parameter assignment
+* Made set_v4l_parameters a non-static function
+* Moved set_v4l_parameters to UsbCam object
+*
