@@ -68,3 +68,11 @@ Changelog for package usb_cam
 * Removed global state from usb_cam by encapsulating it inside an object
   function and structions in usb_cam.h became public and everything else is private
 * Merge pull request #28 from mitchellwills/develop
+  Fix installation of header files
+* Fix installation of header files
+* Contributors: Mitchell Wills, Russell Toris
+
+0.2.0 (2015-01-16)
+------------------
+* Bug fix in camera info settings.
+* Update .travis.y
