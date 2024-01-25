@@ -82,4 +82,8 @@ Changelog for package usb_cam
 * Contributors: Russell Toris
 
 0.1.13 (2014-12-02)
------------
+-------------------
+* Merge pull request #25 from blutack/patch-1
+  Warn rather than error if framerate can't be set
+* Warn rather than error if framerate can't be set
+  The driver doesn't currently wor
