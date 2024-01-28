@@ -88,4 +88,7 @@ Changelog for package usb_cam
 * Warn rather than error if framerate can't be set
   The driver doesn't currently work with em28xx based devices as they don't allow the framerate to be set directly and the node exits with an error. Changing to a warning allows these devices to be used.
 * Update README.md
-* Merge pull 
+* Merge pull request #24 from rjw57/do-not-touch-parameters-unless-asked
+  do not modify parameters unless explicitly set
+* do not modify parameters unless explicitly set
+  The contrast, saturation, brightness, sh
