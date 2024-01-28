@@ -86,4 +86,6 @@ Changelog for package usb_cam
 * Merge pull request #25 from blutack/patch-1
   Warn rather than error if framerate can't be set
 * Warn rather than error if framerate can't be set
-  The driver doesn't currently wor
+  The driver doesn't currently work with em28xx based devices as they don't allow the framerate to be set directly and the node exits with an error. Changing to a warning allows these devices to be used.
+* Update README.md
+* Merge pull 
