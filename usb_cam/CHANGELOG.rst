@@ -91,4 +91,7 @@ Changelog for package usb_cam
 * Merge pull request #24 from rjw57/do-not-touch-parameters-unless-asked
   do not modify parameters unless explicitly set
 * do not modify parameters unless explicitly set
-  The contrast, saturation, brightness, sh
+  The contrast, saturation, brightness, sharpness and focus parameters
+  were recently added to usb_cam. This caused a regression
+  (sigproc/robotic_surgery#17) whereby the default settings for a webcam
+  are overridden 
