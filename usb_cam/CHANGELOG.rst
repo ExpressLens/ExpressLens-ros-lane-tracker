@@ -98,4 +98,11 @@ Changelog for package usb_cam
   In the absence of a know good set of "default" values, leave the
   parameters unset unless the user has explicitly set them in the launch
   file.
-* Contributors: Rich Wareham, Russe
+* Contributors: Rich Wareham, Russell Toris, blutack
+
+0.1.12 (2014-11-05)
+-------------------
+* Merge pull request #22 from dekent/develop
+  White balance parameters
+* Parameter to enable/disable auto white balance
+* Added param
