@@ -94,4 +94,8 @@ Changelog for package usb_cam
   The contrast, saturation, brightness, sharpness and focus parameters
   were recently added to usb_cam. This caused a regression
   (sigproc/robotic_surgery#17) whereby the default settings for a webcam
-  are overridden 
+  are overridden in all cases by the hard-coded defaults in usb_cam.
+  In the absence of a know good set of "default" values, leave the
+  parameters unset unless the user has explicitly set them in the launch
+  file.
+* Contributors: Rich Wareham, Russe
