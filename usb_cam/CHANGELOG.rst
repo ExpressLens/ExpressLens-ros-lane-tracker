@@ -105,4 +105,11 @@ Changelog for package usb_cam
 * Merge pull request #22 from dekent/develop
   White balance parameters
 * Parameter to enable/disable auto white balance
-* Added param
+* Added parameters for white balance
+* uses version major to check for av_codec
+* uses version header to check for AV_CODEC_ID_MJPEG
+* Contributors: David Kent, Russell Toris
+
+0.1.11 (2014-10-30)
+-------------------
+* Merge pull request #2
