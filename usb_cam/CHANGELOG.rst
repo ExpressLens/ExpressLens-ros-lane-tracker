@@ -129,4 +129,7 @@ Changelog for package usb_cam
 * Contributors: Andrzej Pronobis, Russell Toris
 
 0.1.9 (2014-08-26)
--------------
+------------------
+* Uses ros::Rate to enforce software framerate instead of custom time check
+* Merge pull request #16 from liangfok/feature/app_level_framerate_control
+  Modified to enforce framerate control 
