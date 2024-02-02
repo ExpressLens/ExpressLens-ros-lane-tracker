@@ -117,4 +117,11 @@ Changelog for package usb_cam
 * bug fix
 * Setting focus when autofocus is disabled
 * Parameter adjusting
-* Added parameter setting for absolute focus, brightness, contrast, saturation
+* Added parameter setting for absolute focus, brightness, contrast, saturation, and sharpness
+* Contributors: David Kent, Russell Toris
+
+0.1.10 (2014-10-24)
+-------------------
+* Merge pull request #19 from bosch-ros-pkg/av_codec_id
+  Removed deprecated CODEC_ID
+* added legacy
