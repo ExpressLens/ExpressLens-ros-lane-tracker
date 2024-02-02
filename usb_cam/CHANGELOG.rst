@@ -124,4 +124,9 @@ Changelog for package usb_cam
 -------------------
 * Merge pull request #19 from bosch-ros-pkg/av_codec_id
   Removed deprecated CODEC_ID
-* added legacy
+* added legacy macro constants for libav 10
+* Renamed deprecated CODEC_ID constants to AV_CODEC_ID to fix compilation for libav 10
+* Contributors: Andrzej Pronobis, Russell Toris
+
+0.1.9 (2014-08-26)
+-------------
