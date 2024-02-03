@@ -144,4 +144,13 @@ Changelog for package usb_cam
 * Merge pull request #15 from mistoll/develop
   added support for RGB24 pixel format
 * Added RGB24 as pixel format
-* Contributors: Michael Stoll, Russell 
+* Contributors: Michael Stoll, Russell Toris
+
+0.1.7 (2014-08-20)
+------------------
+* changelog fixed
+* minor cleanup and ability to change camera name and info
+* Contributors: Russell Toris
+
+0.1.6 (2014-08-15)
+-----
