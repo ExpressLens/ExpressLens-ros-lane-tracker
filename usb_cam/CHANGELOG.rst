@@ -133,4 +133,10 @@ Changelog for package usb_cam
 * Uses ros::Rate to enforce software framerate instead of custom time check
 * Merge pull request #16 from liangfok/feature/app_level_framerate_control
   Modified to enforce framerate control at the application level in additi...
-* Modified to enforce framerate control at the application level in addition to at the driver level.  This is necessary since the drivers for my webcam did not
+* Modified to enforce framerate control at the application level in addition to at the driver level.  This is necessary since the drivers for my webcam did not obey the requested framerate.
+* Contributors: Russell Toris, liang
+
+0.1.8 (2014-08-21)
+------------------
+* autoexposure and exposure settings now exposed via ROS parameters
+* added ability to call v4l-util
