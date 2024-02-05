@@ -156,4 +156,9 @@ Changelog for package usb_cam
 ------------------
 * Merge pull request #14 from KaijenHsiao/master
   added support for 10-bit mono cameras advertising as YUV
-* added support for 10-bit mono cameras advertising as YUV (such as
+* added support for 10-bit mono cameras advertising as YUV (such as Leopard Imaging's LI-USB30-V034)
+* Update CHANGELOG.rst
+* changelog updated
+* Merge pull request #13 from vrabaud/develop
+  add a a ros::spinOnce to get set_camera_info working
+* add a a ros::spinOnce to
