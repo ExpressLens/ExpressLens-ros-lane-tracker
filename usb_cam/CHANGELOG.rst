@@ -161,4 +161,6 @@ Changelog for package usb_cam
 * changelog updated
 * Merge pull request #13 from vrabaud/develop
   add a a ros::spinOnce to get set_camera_info working
-* add a a ros::spinOnce to
+* add a a ros::spinOnce to get set_camera_info working
+  This is explained in the docs of CameraInfoManager
+  https://github.com/ros-perception/image_common/blob/hydro-devel/camera_info_manager/include/camera_info_manager/camera_
