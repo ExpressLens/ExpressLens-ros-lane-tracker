@@ -153,4 +153,7 @@ Changelog for package usb_cam
 * Contributors: Russell Toris
 
 0.1.6 (2014-08-15)
------
+------------------
+* Merge pull request #14 from KaijenHsiao/master
+  added support for 10-bit mono cameras advertising as YUV
+* added support for 10-bit mono cameras advertising as YUV (such as
