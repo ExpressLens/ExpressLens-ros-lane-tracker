@@ -169,4 +169,8 @@ Changelog for package usb_cam
 
 0.1.5 (2014-07-28)
 ------------------
-* auto
+* auto format
+* cleanup of readme and such
+* Merge branch 'hydro-devel' of github.com:bosch-ros-pkg/usb_cam
+* Merge pull request #11 from pronobis/hydro-devel
+  Fixed a bug with av_free missing by adding a proper incl
