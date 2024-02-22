@@ -173,4 +173,8 @@ Changelog for package usb_cam
 * cleanup of readme and such
 * Merge branch 'hydro-devel' of github.com:bosch-ros-pkg/usb_cam
 * Merge pull request #11 from pronobis/hydro-devel
-  Fixed a bug with av_free missing by adding a proper incl
+  Fixed a bug with av_free missing by adding a proper include.
+* Fixed a bug with av_free missing by adding a proper include on Ubuntu 14.04.
+* Merge pull request #7 from cottsay/groovy-devel
+  Use pkg-config to find avcodec and swscale
+* Merge pull request #5 from FriedCircuit
