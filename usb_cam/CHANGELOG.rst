@@ -190,4 +190,13 @@ Changelog for package usb_cam
 * Contributors: Andrzej Pronobis, Jon Binney, Russell Toris, Scott K Logan, William
 
 0.1.3 (2013-07-11)
+------------------
+* Merge pull request #1 from jonbinney/rosify
+  Bag of improvements
+* add framerate parameter
+* use ROS_* for output
+* use camera_info_manager
+* Contributors: Jon Binney, Russell Toris
+
+0.1.2 (2013-05-06)
 -
