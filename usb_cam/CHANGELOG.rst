@@ -177,4 +177,11 @@ Changelog for package usb_cam
 * Fixed a bug with av_free missing by adding a proper include on Ubuntu 14.04.
 * Merge pull request #7 from cottsay/groovy-devel
   Use pkg-config to find avcodec and swscale
-* Merge pull request #5 from FriedCircuit
+* Merge pull request #5 from FriedCircuits/hydro-devel
+  Remove requirments for self_test
+* Use pkg-config to find avcodec and swscale
+* Update package.xml
+* Remove selftest
+* Remove selftest
+* Update usb_cam_node.cpp
+* Merge pull request #2
