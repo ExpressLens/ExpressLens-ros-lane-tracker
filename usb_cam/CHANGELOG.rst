@@ -184,4 +184,10 @@ Changelog for package usb_cam
 * Remove selftest
 * Remove selftest
 * Update usb_cam_node.cpp
-* Merge pull request #2
+* Merge pull request #2 from jonbinney/7_17
+  swap out deprecated libavcodec functions
+* swap out deprecated libavcodec functions
+* Contributors: Andrzej Pronobis, Jon Binney, Russell Toris, Scott K Logan, William
+
+0.1.3 (2013-07-11)
+-
