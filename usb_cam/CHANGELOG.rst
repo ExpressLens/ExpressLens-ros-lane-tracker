@@ -211,4 +211,14 @@ Changelog for package usb_cam
 
 0.1.0 (2013-05-01)
 ------------------
-* Up
+* Update package.xml
+* minor cleanup
+* inital merge
+* Update README.md
+* Update README.md
+* Update README.md
+* Update README.md
+* Update README.md
+* Update CLONE_SETUP.sh
+* Update README.md
+* Updated the R
