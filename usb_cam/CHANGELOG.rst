@@ -199,4 +199,16 @@ Changelog for package usb_cam
 * Contributors: Jon Binney, Russell Toris
 
 0.1.2 (2013-05-06)
--
+------------------
+* installs usb_cam_node
+* Contributors: Russell Toris
+
+0.1.1 (2013-05-02)
+------------------
+* cmake fixed
+* ffmpeg added
+* Contributors: Russell Toris
+
+0.1.0 (2013-05-01)
+------------------
+* Up
