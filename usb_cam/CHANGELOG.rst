@@ -221,4 +221,10 @@ Changelog for package usb_cam
 * Update README.md
 * Update CLONE_SETUP.sh
 * Update README.md
-* Updated the R
+* Updated the README.md.
+* Updated the installation instructions.
+* Fixed syntax in the README.
+* Updated README for ARDUINO support.
+* Fixed update script.
+* Updated the readme and updating scripts.
+* Updating fo
