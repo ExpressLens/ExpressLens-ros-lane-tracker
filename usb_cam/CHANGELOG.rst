@@ -227,4 +227,8 @@ Changelog for package usb_cam
 * Updated README for ARDUINO support.
 * Fixed update script.
 * Updated the readme and updating scripts.
-* Updating fo
+* Updating for installation on Robot.
+* Updated installs and README for ROS.
+* Make sure the User knows to source the devel/setup.sh.
+* Getting rid of subtrees and Catkinized USB CAM.
+* U
