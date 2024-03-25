@@ -242,3 +242,7 @@ Changelog for package usb_cam
 * Merge commit 'b2c739cb476e1e01425947e46dc2431464f241b3' as 'src/ar_track_alvar'
 * Squashed 'src/ar_track_alvar/' content from commit 9ecca95
   git-subtree-dir: src/ar_track_alvar
+  git-subtree-split: 9ecca9558edc7d3a9e692eacc93e082bf1e9a3e6
+* Merge commit '9feb470d0ebdaa51e426be4d58f419b45928a671' as 'src/sofie_ros'
+* Squashed 'src/sofie_ros/' content from commit 3ca5edf
+  git-subtree-
