@@ -231,4 +231,11 @@ Changelog for package usb_cam
 * Updated installs and README for ROS.
 * Make sure the User knows to source the devel/setup.sh.
 * Getting rid of subtrees and Catkinized USB CAM.
-* U
+* Updating home to use ROSWS.
+* Fixing the launch file for video1.
+* Merge commit '0bc3322966e4c0ed259320827dd1f5cc8460efce'
+  Conflicts:
+  src/sofie_ros/package.xml
+* Removed unnecessary file.
+* Compiles.
+* 
