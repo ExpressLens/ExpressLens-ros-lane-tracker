@@ -238,4 +238,7 @@ Changelog for package usb_cam
   src/sofie_ros/package.xml
 * Removed unnecessary file.
 * Compiles.
-* 
+* Adding the Catkin build scripts.
+* Merge commit 'b2c739cb476e1e01425947e46dc2431464f241b3' as 'src/ar_track_alvar'
+* Squashed 'src/ar_track_alvar/' content from commit 9ecca95
+  git-subtree-dir: src/ar_track_alvar
