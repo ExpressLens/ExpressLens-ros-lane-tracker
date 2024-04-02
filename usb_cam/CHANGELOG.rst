@@ -259,4 +259,9 @@ Changelog for package usb_cam
 * Catkininizing.
 * (catkin)Catkininizing.
 * Modifying the setup of roshome.
-* Starting to Catkininize the projec
+* Starting to Catkininize the project.
+* (catkin)Starting to Catkininize the project.
+* Going to catinize it.
+* (catkin)Going to catinize it.
+* Modified to new version of sofie_ros.
+* Renamed import_csv_data.py to fileUtils.py, because it doe
