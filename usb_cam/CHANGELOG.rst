@@ -264,4 +264,7 @@ Changelog for package usb_cam
 * Going to catinize it.
 * (catkin)Going to catinize it.
 * Modified to new version of sofie_ros.
-* Renamed import_csv_data.py to fileUtils.py, because it doe
+* Renamed import_csv_data.py to fileUtils.py, because it does more now.
+* (catkin)Renamed import_csv_data.py to fileUtils.py, because it does more now.
+* Updating to use a csv file specified by the user. Separating PyTables path manipulation into SOFIEHDFFORMAT.
+* (catki
