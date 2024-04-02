@@ -252,4 +252,11 @@ Changelog for package usb_cam
 * Fixed submodules.
 * Removing old package.
 * Merge branch 'catkin'
-  Conflict
+  Conflicts:
+  README.md
+  cmake_install.cmake
+* Brancing package down to stack base.
+* Catkininizing.
+* (catkin)Catkininizing.
+* Modifying the setup of roshome.
+* Starting to Catkininize the projec
