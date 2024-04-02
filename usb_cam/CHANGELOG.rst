@@ -245,4 +245,11 @@ Changelog for package usb_cam
   git-subtree-split: 9ecca9558edc7d3a9e692eacc93e082bf1e9a3e6
 * Merge commit '9feb470d0ebdaa51e426be4d58f419b45928a671' as 'src/sofie_ros'
 * Squashed 'src/sofie_ros/' content from commit 3ca5edf
-  git-subtree-
+  git-subtree-dir: src/sofie_ros
+  git-subtree-split: 3ca5edfba496840b41bfe01dfdff883cacff1a97
+* Removing stackts.
+* Removing submodules.
+* Fixed submodules.
+* Removing old package.
+* Merge branch 'catkin'
+  Conflict
