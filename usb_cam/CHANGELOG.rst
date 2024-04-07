@@ -279,4 +279,11 @@ Changelog for package usb_cam
 * Working the CLONE install.
 * Modifiying install script.
 * Added a script to update the gitmodules for read-only clones.
-* Merge branch 'master' of github.com:agcooke
+* Merge branch 'master' of github.com:agcooke/roshome
+* Initial commit
+* Added the modules.
+* Added usb_cam,
+* Updating to Groovy.
+* (catkin)Updating to Groovy.
+* Added another potential launch file for exporting video from rosbag.
+* (catkin)Added another pot
