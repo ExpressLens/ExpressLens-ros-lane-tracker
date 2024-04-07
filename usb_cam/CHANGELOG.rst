@@ -275,4 +275,8 @@ Changelog for package usb_cam
 * Update the Git submodules.
 * Modified the README and CLONE_SETUP.sh
 * Added SOFIEHDFFORMAT as a submodule.
-* Added the ExperimentControl Repo
+* Added the ExperimentControl Repo as a submodule.
+* Working the CLONE install.
+* Modifiying install script.
+* Added a script to update the gitmodules for read-only clones.
+* Merge branch 'master' of github.com:agcooke
