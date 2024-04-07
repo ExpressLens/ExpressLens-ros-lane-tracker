@@ -270,4 +270,9 @@ Changelog for package usb_cam
 * (catkin)Updating to use a csv file specified by the user. Separating PyTables path manipulation into SOFIEHDFFORMAT.
 * Merge branch 'release/0.0.2'
 * Created the install script.
-* Remove
+* Removed the Python Packages as submodules.
+* Merge branch 'release/0.0.1'
+* Update the Git submodules.
+* Modified the README and CLONE_SETUP.sh
+* Added SOFIEHDFFORMAT as a submodule.
+* Added the ExperimentControl Repo
