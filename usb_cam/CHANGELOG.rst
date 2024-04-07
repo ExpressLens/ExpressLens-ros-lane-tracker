@@ -267,4 +267,7 @@ Changelog for package usb_cam
 * Renamed import_csv_data.py to fileUtils.py, because it does more now.
 * (catkin)Renamed import_csv_data.py to fileUtils.py, because it does more now.
 * Updating to use a csv file specified by the user. Separating PyTables path manipulation into SOFIEHDFFORMAT.
-* (catki
+* (catkin)Updating to use a csv file specified by the user. Separating PyTables path manipulation into SOFIEHDFFORMAT.
+* Merge branch 'release/0.0.2'
+* Created the install script.
+* Remove
