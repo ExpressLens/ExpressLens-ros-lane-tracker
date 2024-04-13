@@ -289,4 +289,8 @@ Changelog for package usb_cam
 * (catkin)Added another potential launch file for exporting video from rosbag.
 * Added a launcher to ros bag the usb_cam, for later playback.
 * (catkin)Added a launcher to ros bag the usb_cam, for later playback.
-* Added 
+* Added some files that were possibly not correct
+* (catkin)Added some files that were possibly not correct
+* Fixed bugs with the importing.
+* (catkin)Fixed bugs with the importing.
+* Added forgotten __init__.py file and ch
