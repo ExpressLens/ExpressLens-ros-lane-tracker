@@ -286,4 +286,7 @@ Changelog for package usb_cam
 * Updating to Groovy.
 * (catkin)Updating to Groovy.
 * Added another potential launch file for exporting video from rosbag.
-* (catkin)Added another pot
+* (catkin)Added another potential launch file for exporting video from rosbag.
+* Added a launcher to ros bag the usb_cam, for later playback.
+* (catkin)Added a launcher to ros bag the usb_cam, for later playback.
+* Added 
