@@ -293,4 +293,7 @@ Changelog for package usb_cam
 * (catkin)Added some files that were possibly not correct
 * Fixed bugs with the importing.
 * (catkin)Fixed bugs with the importing.
-* Added forgotten __init__.py file and ch
+* Added forgotten __init__.py file and changed to importdata sofiehdfformat funciton.
+* (catkin)Added forgotten __init__.py file and changed to importdata sofiehdfformat funciton.
+* Refractoring to make it possible to log to CSV.
+  There were 
