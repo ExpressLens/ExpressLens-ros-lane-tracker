@@ -300,4 +300,9 @@ Changelog for package usb_cam
   pytables files. The package now logs to CSV and then
   provides a function to post import the data into
   SOFIEHDFFORMAT.
-* (catkin)Refractoring to make i
+* (catkin)Refractoring to make it possible to log to CSV.
+  There were problems handling concurrent writing to
+  pytables files. The package now logs to CSV and then
+  provides a function to post import the data into
+  SOFIEHDFFORMAT.
+* Ex
