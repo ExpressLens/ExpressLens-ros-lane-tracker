@@ -296,4 +296,8 @@ Changelog for package usb_cam
 * Added forgotten __init__.py file and changed to importdata sofiehdfformat funciton.
 * (catkin)Added forgotten __init__.py file and changed to importdata sofiehdfformat funciton.
 * Refractoring to make it possible to log to CSV.
-  There were 
+  There were problems handling concurrent writing to
+  pytables files. The package now logs to CSV and then
+  provides a function to post import the data into
+  SOFIEHDFFORMAT.
+* (catkin)Refractoring to make i
