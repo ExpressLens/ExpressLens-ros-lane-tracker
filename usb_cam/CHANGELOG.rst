@@ -305,4 +305,7 @@ Changelog for package usb_cam
   pytables files. The package now logs to CSV and then
   provides a function to post import the data into
   SOFIEHDFFORMAT.
-* Ex
+* Exporting to a CSV. Does not work yet.
+* (catkin)Exporting to a CSV. Does not work yet.
+* Added a close on terminate signal handler.
+* (catkin)Added a close on terminate signal handle
