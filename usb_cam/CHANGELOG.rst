@@ -308,4 +308,8 @@ Changelog for package usb_cam
 * Exporting to a CSV. Does not work yet.
 * (catkin)Exporting to a CSV. Does not work yet.
 * Added a close on terminate signal handler.
-* (catkin)Added a close on terminate signal handle
+* (catkin)Added a close on terminate signal handler.
+* Made the marker size be set via a parameter to the launch file.
+* (catkin)Made the marker size be set via a parameter to the launch file.
+* Changed the Callibration data.
+* (catkin)Changed the Callibration
