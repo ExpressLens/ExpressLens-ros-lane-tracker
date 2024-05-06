@@ -312,4 +312,9 @@ Changelog for package usb_cam
 * Made the marker size be set via a parameter to the launch file.
 * (catkin)Made the marker size be set via a parameter to the launch file.
 * Changed the Callibration data.
-* (catkin)Changed the Callibration
+* (catkin)Changed the Callibration data.
+* The ar_pose listener.
+* (catkin)The ar_pose listener.
+* Changed the sofie driver to directly safe the ar_pose data.
+  We are going to perform experiments and this means that the extra
+  data might be useful at a later s
