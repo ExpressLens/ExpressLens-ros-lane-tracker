@@ -317,4 +317,8 @@ Changelog for package usb_cam
 * (catkin)The ar_pose listener.
 * Changed the sofie driver to directly safe the ar_pose data.
   We are going to perform experiments and this means that the extra
-  data might be useful at a later s
+  data might be useful at a later stage.
+* (catkin)Changed the sofie driver to directly safe the ar_pose data.
+  We are going to perform experiments and this means that the extra
+  data might be useful at a later stage.
+* Changed the size of t
