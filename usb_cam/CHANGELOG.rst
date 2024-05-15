@@ -321,4 +321,8 @@ Changelog for package usb_cam
 * (catkin)Changed the sofie driver to directly safe the ar_pose data.
   We are going to perform experiments and this means that the extra
   data might be useful at a later stage.
-* Changed the size of t
+* Changed the size of the marker.
+* Updated the usb_cam config to work for home camera.
+* Added callibration files and launch files.
+* Turned off history.
+* (catkin)Added some comments and renamed.
