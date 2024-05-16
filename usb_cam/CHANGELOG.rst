@@ -326,3 +326,6 @@ Changelog for package usb_cam
 * Added callibration files and launch files.
 * Turned off history.
 * (catkin)Added some comments and renamed.
+* Added some comments and renamed.
+* (catkin)The Quaternions were mixed around. Fixed the launch file to log to file instead of screen.
+* The Quaternions were mixed around. Fixe
