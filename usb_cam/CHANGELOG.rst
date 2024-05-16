@@ -332,4 +332,8 @@ Changelog for package usb_cam
 * (catkin)Updating the README's.
 * Updating the README's.
 * Updated the launch file to launch ar_pose and rviz for debugging.
-* (catkin)Added arguments
+* (catkin)Added arguments to the launch script.
+* Added arguments to the launch script.
+* Added the Stack formating files.
+* (catkin)Organising into a stack instead of separate packages.
+* Organisin
