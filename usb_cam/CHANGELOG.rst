@@ -328,4 +328,8 @@ Changelog for package usb_cam
 * (catkin)Added some comments and renamed.
 * Added some comments and renamed.
 * (catkin)The Quaternions were mixed around. Fixed the launch file to log to file instead of screen.
-* The Quaternions were mixed around. Fixe
+* The Quaternions were mixed around. Fixed the launch file to log to file instead of screen.
+* (catkin)Updating the README's.
+* Updating the README's.
+* Updated the launch file to launch ar_pose and rviz for debugging.
+* (catkin)Added arguments
