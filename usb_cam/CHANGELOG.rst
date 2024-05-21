@@ -336,4 +336,8 @@ Changelog for package usb_cam
 * Added arguments to the launch script.
 * Added the Stack formating files.
 * (catkin)Organising into a stack instead of separate packages.
-* Organisin
+* Organising into a stack instead of separate packages.
+* Trying to figure out how to start and stop the node.
+* Adding simple parameters.
+* Added the ROS files.
+* Basic driver now works for listening 
