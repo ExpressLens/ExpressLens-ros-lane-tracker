@@ -340,4 +340,7 @@ Changelog for package usb_cam
 * Trying to figure out how to start and stop the node.
 * Adding simple parameters.
 * Added the ROS files.
-* Basic driver now works for listening 
+* Basic driver now works for listening on a channel that broadcasts geometry_msgs.msg.QuaternionStamped messages.
+* Working on the listerner that will write to HDFFormat.
+* Creating a listerner that can write to sofiehdfformat files.
+* I
