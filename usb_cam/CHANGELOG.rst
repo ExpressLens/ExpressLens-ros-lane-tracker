@@ -343,4 +343,5 @@ Changelog for package usb_cam
 * Basic driver now works for listening on a channel that broadcasts geometry_msgs.msg.QuaternionStamped messages.
 * Working on the listerner that will write to HDFFormat.
 * Creating a listerner that can write to sofiehdfformat files.
-* I
+* Initial commit
+* Contributors: Adrian Cooke, Russell Toris, Adrian
