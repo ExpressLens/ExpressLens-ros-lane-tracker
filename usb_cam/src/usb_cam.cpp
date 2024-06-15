@@ -286,3 +286,192 @@ static void YUV2RGB(const unsigned char y, const unsigned char u, const unsigned
   int g2 = y2 - (((u2 * 12975) + (v2 * 18949)) >> 15);
   int b2 = y2 + ((u2 * 66883) >> 15);
   //std::cerr << "   RGB=("<<r2<<","<<g2<<","<<b2<<")"<<std::endl;
+
+  // Cap the values.
+  *r = CLIPVALUE(r2);
+  *g = CLIPVALUE(g2);
+  *b = CLIPVALUE(b2);
+}
+
+void uyvy2rgb(char *YUV, char *RGB, int NumPixels)
+{
+  int i, j;
+  unsigned char y0, y1, u, v;
+  unsigned char r, g, b;
+  for (i = 0, j = 0; i < (NumPixels << 1); i += 4, j += 6)
+  {
+    u = (unsigned char)YUV[i + 0];
+    y0 = (unsigned char)YUV[i + 1];
+    v = (unsigned char)YUV[i + 2];
+    y1 = (unsigned char)YUV[i + 3];
+    YUV2RGB(y0, u, v, &r, &g, &b);
+    RGB[j + 0] = r;
+    RGB[j + 1] = g;
+    RGB[j + 2] = b;
+    YUV2RGB(y1, u, v, &r, &g, &b);
+    RGB[j + 3] = r;
+    RGB[j + 4] = g;
+    RGB[j + 5] = b;
+  }
+}
+
+static void mono102mono8(char *RAW, char *MONO, int NumPixels)
+{
+  int i, j;
+  for (i = 0, j = 0; i < (NumPixels << 1); i += 2, j += 1)
+  {
+    //first byte is low byte, second byte is high byte; smash together and convert to 8-bit
+    MONO[j] = (unsigned char)(((RAW[i + 0] >> 2) & 0x3F) | ((RAW[i + 1] << 6) & 0xC0));
+  }
+}
+
+static void yuyv2rgb(char *YUV, char *RGB, int NumPixels)
+{
+  int i, j;
+  unsigned char y0, y1, u, v;
+  unsigned char r, g, b;
+
+  for (i = 0, j = 0; i < (NumPixels << 1); i += 4, j += 6)
+  {
+    y0 = (unsigned char)YUV[i + 0];
+    u = (unsigned char)YUV[i + 1];
+    y1 = (unsigned char)YUV[i + 2];
+    v = (unsigned char)YUV[i + 3];
+    YUV2RGB(y0, u, v, &r, &g, &b);
+    RGB[j + 0] = r;
+    RGB[j + 1] = g;
+    RGB[j + 2] = b;
+    YUV2RGB(y1, u, v, &r, &g, &b);
+    RGB[j + 3] = r;
+    RGB[j + 4] = g;
+    RGB[j + 5] = b;
+  }
+}
+
+void rgb242rgb(char *YUV, char *RGB, int NumPixels)
+{
+  memcpy(RGB, YUV, NumPixels * 3);
+}
+
+
+UsbCam::UsbCam()
+  : io_(IO_METHOD_MMAP), fd_(-1), buffers_(NULL), n_buffers_(0), avframe_camera_(NULL),
+    avframe_rgb_(NULL), avcodec_(NULL), avoptions_(NULL), avcodec_context_(NULL),
+    avframe_camera_size_(0), avframe_rgb_size_(0), video_sws_(NULL), image_(NULL), is_capturing_(false) {
+}
+UsbCam::~UsbCam()
+{
+  shutdown();
+}
+
+int UsbCam::init_mjpeg_decoder(int image_width, int image_height)
+{
+  avcodec_register_all();
+
+  avcodec_ = avcodec_find_decoder(AV_CODEC_ID_MJPEG);
+  if (!avcodec_)
+  {
+    ROS_ERROR("Could not find MJPEG decoder");
+    return 0;
+  }
+
+  avcodec_context_ = avcodec_alloc_context3(avcodec_);
+#if LIBAVCODEC_VERSION_MAJOR < 55
+  avframe_camera_ = avcodec_alloc_frame();
+  avframe_rgb_ = avcodec_alloc_frame();
+#else
+  avframe_camera_ = av_frame_alloc();
+  avframe_rgb_ = av_frame_alloc();
+#endif
+
+  avpicture_alloc((AVPicture *)avframe_rgb_, AV_PIX_FMT_RGB24, image_width, image_height);
+
+  avcodec_context_->codec_id = AV_CODEC_ID_MJPEG;
+  avcodec_context_->width = image_width;
+  avcodec_context_->height = image_height;
+
+#if LIBAVCODEC_VERSION_MAJOR > 52
+  avcodec_context_->pix_fmt = AV_PIX_FMT_YUV422P;
+  avcodec_context_->codec_type = AVMEDIA_TYPE_VIDEO;
+#endif
+
+  avframe_camera_size_ = avpicture_get_size(AV_PIX_FMT_YUV422P, image_width, image_height);
+  avframe_rgb_size_ = avpicture_get_size(AV_PIX_FMT_RGB24, image_width, image_height);
+
+  /* open it */
+  if (avcodec_open2(avcodec_context_, avcodec_, &avoptions_) < 0)
+  {
+    ROS_ERROR("Could not open MJPEG Decoder");
+    return 0;
+  }
+  return 1;
+}
+
+void UsbCam::mjpeg2rgb(char *MJPEG, int len, char *RGB, int NumPixels)
+{
+  int got_picture;
+
+  memset(RGB, 0, avframe_rgb_size_);
+
+#if LIBAVCODEC_VERSION_MAJOR > 52
+  int decoded_len;
+  AVPacket avpkt;
+  av_init_packet(&avpkt);
+
+  avpkt.size = len;
+  avpkt.data = (unsigned char*)MJPEG;
+  decoded_len = avcodec_decode_video2(avcodec_context_, avframe_camera_, &got_picture, &avpkt);
+
+  if (decoded_len < 0)
+  {
+    ROS_ERROR("Error while decoding frame.");
+    return;
+  }
+#else
+  avcodec_decode_video(avcodec_context_, avframe_camera_, &got_picture, (uint8_t *) MJPEG, len);
+#endif
+
+  if (!got_picture)
+  {
+    ROS_ERROR("Webcam: expected picture but didn't get it...");
+    return;
+  }
+
+  int xsize = avcodec_context_->width;
+  int ysize = avcodec_context_->height;
+  int pic_size = avpicture_get_size(avcodec_context_->pix_fmt, xsize, ysize);
+  if (pic_size != avframe_camera_size_)
+  {
+    ROS_ERROR("outbuf size mismatch.  pic_size: %d bufsize: %d", pic_size, avframe_camera_size_);
+    return;
+  }
+
+  video_sws_ = sws_getContext(xsize, ysize, avcodec_context_->pix_fmt, xsize, ysize, AV_PIX_FMT_RGB24, SWS_BILINEAR, NULL,
+			      NULL,  NULL);
+  sws_scale(video_sws_, avframe_camera_->data, avframe_camera_->linesize, 0, ysize, avframe_rgb_->data,
+            avframe_rgb_->linesize);
+  sws_freeContext(video_sws_);
+
+  int size = avpicture_layout((AVPicture *)avframe_rgb_, AV_PIX_FMT_RGB24, xsize, ysize, (uint8_t *)RGB, avframe_rgb_size_);
+  if (size != avframe_rgb_size_)
+  {
+    ROS_ERROR("webcam: avpicture_layout error: %d", size);
+    return;
+  }
+}
+
+void UsbCam::process_image(const void * src, int len, camera_image_t *dest)
+{
+  if (pixelformat_ == V4L2_PIX_FMT_YUYV)
+  {
+    if (monochrome_)
+    { //actually format V4L2_PIX_FMT_Y16, but xioctl gets unhappy if you don't use the advertised type (yuyv)
+      mono102mono8((char*)src, dest->image, dest->width * dest->height);
+    }
+    else
+    {
+      yuyv2rgb((char*)src, dest->image, dest->width * dest->height);
+    }
+  }
+  else if (pixelformat_ == V4L2_PIX_FMT_UYVY)
+    uyvy2rgb((char*)src, dest->image, dest->width * dest->height);
