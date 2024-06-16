@@ -674,3 +674,180 @@ void UsbCam::start_capturing(void)
 
       break;
   }
+  is_capturing_ = true;
+}
+
+void UsbCam::uninit_device(void)
+{
+  unsigned int i;
+
+  switch (io_)
+  {
+    case IO_METHOD_READ:
+      free(buffers_[0].start);
+      break;
+
+    case IO_METHOD_MMAP:
+      for (i = 0; i < n_buffers_; ++i)
+        if (-1 == munmap(buffers_[i].start, buffers_[i].length))
+          errno_exit("munmap");
+      break;
+
+    case IO_METHOD_USERPTR:
+      for (i = 0; i < n_buffers_; ++i)
+        free(buffers_[i].start);
+      break;
+  }
+
+  free(buffers_);
+}
+
+void UsbCam::init_read(unsigned int buffer_size)
+{
+  buffers_ = (buffer*)calloc(1, sizeof(*buffers_));
+
+  if (!buffers_)
+  {
+    ROS_ERROR("Out of memory");
+    exit(EXIT_FAILURE);
+  }
+
+  buffers_[0].length = buffer_size;
+  buffers_[0].start = malloc(buffer_size);
+
+  if (!buffers_[0].start)
+  {
+    ROS_ERROR("Out of memory");
+    exit(EXIT_FAILURE);
+  }
+}
+
+void UsbCam::init_mmap(void)
+{
+  struct v4l2_requestbuffers req;
+
+  CLEAR(req);
+
+  req.count = 4;
+  req.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+  req.memory = V4L2_MEMORY_MMAP;
+
+  if (-1 == xioctl(fd_, VIDIOC_REQBUFS, &req))
+  {
+    if (EINVAL == errno)
+    {
+      ROS_ERROR_STREAM(camera_dev_ << " does not support memory mapping");
+      exit(EXIT_FAILURE);
+    }
+    else
+    {
+      errno_exit("VIDIOC_REQBUFS");
+    }
+  }
+
+  if (req.count < 2)
+  {
+    ROS_ERROR_STREAM("Insufficient buffer memory on " << camera_dev_);
+    exit(EXIT_FAILURE);
+  }
+
+  buffers_ = (buffer*)calloc(req.count, sizeof(*buffers_));
+
+  if (!buffers_)
+  {
+    ROS_ERROR("Out of memory");
+    exit(EXIT_FAILURE);
+  }
+
+  for (n_buffers_ = 0; n_buffers_ < req.count; ++n_buffers_)
+  {
+    struct v4l2_buffer buf;
+
+    CLEAR(buf);
+
+    buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    buf.memory = V4L2_MEMORY_MMAP;
+    buf.index = n_buffers_;
+
+    if (-1 == xioctl(fd_, VIDIOC_QUERYBUF, &buf))
+      errno_exit("VIDIOC_QUERYBUF");
+
+    buffers_[n_buffers_].length = buf.length;
+    buffers_[n_buffers_].start = mmap(NULL /* start anywhere */, buf.length, PROT_READ | PROT_WRITE /* required */,
+				      MAP_SHARED /* recommended */,
+				      fd_, buf.m.offset);
+
+    if (MAP_FAILED == buffers_[n_buffers_].start)
+      errno_exit("mmap");
+  }
+}
+
+void UsbCam::init_userp(unsigned int buffer_size)
+{
+  struct v4l2_requestbuffers req;
+  unsigned int page_size;
+
+  page_size = getpagesize();
+  buffer_size = (buffer_size + page_size - 1) & ~(page_size - 1);
+
+  CLEAR(req);
+
+  req.count = 4;
+  req.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+  req.memory = V4L2_MEMORY_USERPTR;
+
+  if (-1 == xioctl(fd_, VIDIOC_REQBUFS, &req))
+  {
+    if (EINVAL == errno)
+    {
+      ROS_ERROR_STREAM(camera_dev_ << " does not support "
+                "user pointer i/o");
+      exit(EXIT_FAILURE);
+    }
+    else
+    {
+      errno_exit("VIDIOC_REQBUFS");
+    }
+  }
+
+  buffers_ = (buffer*)calloc(4, sizeof(*buffers_));
+
+  if (!buffers_)
+  {
+    ROS_ERROR("Out of memory");
+    exit(EXIT_FAILURE);
+  }
+
+  for (n_buffers_ = 0; n_buffers_ < 4; ++n_buffers_)
+  {
+    buffers_[n_buffers_].length = buffer_size;
+    buffers_[n_buffers_].start = memalign(/* boundary */page_size, buffer_size);
+
+    if (!buffers_[n_buffers_].start)
+    {
+      ROS_ERROR("Out of memory");
+      exit(EXIT_FAILURE);
+    }
+  }
+}
+
+void UsbCam::init_device(int image_width, int image_height, int framerate)
+{
+  struct v4l2_capability cap;
+  struct v4l2_cropcap cropcap;
+  struct v4l2_crop crop;
+  struct v4l2_format fmt;
+  unsigned int min;
+
+  if (-1 == xioctl(fd_, VIDIOC_QUERYCAP, &cap))
+  {
+    if (EINVAL == errno)
+    {
+      ROS_ERROR_STREAM(camera_dev_ << " is no V4L2 device");
+      exit(EXIT_FAILURE);
+    }
+    else
+    {
+      errno_exit("VIDIOC_QUERYCAP");
+    }
+  }
