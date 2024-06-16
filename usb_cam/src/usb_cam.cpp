@@ -475,3 +475,202 @@ void UsbCam::process_image(const void * src, int len, camera_image_t *dest)
   }
   else if (pixelformat_ == V4L2_PIX_FMT_UYVY)
     uyvy2rgb((char*)src, dest->image, dest->width * dest->height);
+  else if (pixelformat_ == V4L2_PIX_FMT_MJPEG)
+    mjpeg2rgb((char*)src, len, dest->image, dest->width * dest->height);
+  else if (pixelformat_ == V4L2_PIX_FMT_RGB24)
+    rgb242rgb((char*)src, dest->image, dest->width * dest->height);
+  else if (pixelformat_ == V4L2_PIX_FMT_GREY)
+    memcpy(dest->image, (char*)src, dest->width * dest->height);
+}
+
+int UsbCam::read_frame()
+{
+  struct v4l2_buffer buf;
+  unsigned int i;
+  int len;
+
+  switch (io_)
+  {
+    case IO_METHOD_READ:
+      len = read(fd_, buffers_[0].start, buffers_[0].length);
+      if (len == -1)
+      {
+        switch (errno)
+        {
+          case EAGAIN:
+            return 0;
+
+          case EIO:
+            /* Could ignore EIO, see spec. */
+
+            /* fall through */
+
+          default:
+            errno_exit("read");
+        }
+      }
+
+      process_image(buffers_[0].start, len, image_);
+
+      break;
+
+    case IO_METHOD_MMAP:
+      CLEAR(buf);
+
+      buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+      buf.memory = V4L2_MEMORY_MMAP;
+
+      if (-1 == xioctl(fd_, VIDIOC_DQBUF, &buf))
+      {
+        switch (errno)
+        {
+          case EAGAIN:
+            return 0;
+
+          case EIO:
+            /* Could ignore EIO, see spec. */
+
+            /* fall through */
+
+          default:
+            errno_exit("VIDIOC_DQBUF");
+        }
+      }
+
+      assert(buf.index < n_buffers_);
+      len = buf.bytesused;
+      process_image(buffers_[buf.index].start, len, image_);
+
+      if (-1 == xioctl(fd_, VIDIOC_QBUF, &buf))
+        errno_exit("VIDIOC_QBUF");
+
+      break;
+
+    case IO_METHOD_USERPTR:
+      CLEAR(buf);
+
+      buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+      buf.memory = V4L2_MEMORY_USERPTR;
+
+      if (-1 == xioctl(fd_, VIDIOC_DQBUF, &buf))
+      {
+        switch (errno)
+        {
+          case EAGAIN:
+            return 0;
+
+          case EIO:
+            /* Could ignore EIO, see spec. */
+
+            /* fall through */
+
+          default:
+            errno_exit("VIDIOC_DQBUF");
+        }
+      }
+
+      for (i = 0; i < n_buffers_; ++i)
+        if (buf.m.userptr == (unsigned long)buffers_[i].start && buf.length == buffers_[i].length)
+          break;
+
+      assert(i < n_buffers_);
+      len = buf.bytesused;
+      process_image((void *)buf.m.userptr, len, image_);
+
+      if (-1 == xioctl(fd_, VIDIOC_QBUF, &buf))
+        errno_exit("VIDIOC_QBUF");
+
+      break;
+  }
+
+  return 1;
+}
+
+bool UsbCam::is_capturing() {
+  return is_capturing_;
+}
+
+void UsbCam::stop_capturing(void)
+{
+  if(!is_capturing_) return;
+
+  is_capturing_ = false;
+  enum v4l2_buf_type type;
+
+  switch (io_)
+  {
+    case IO_METHOD_READ:
+      /* Nothing to do. */
+      break;
+
+    case IO_METHOD_MMAP:
+    case IO_METHOD_USERPTR:
+      type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+
+      if (-1 == xioctl(fd_, VIDIOC_STREAMOFF, &type))
+        errno_exit("VIDIOC_STREAMOFF");
+
+      break;
+  }
+}
+
+void UsbCam::start_capturing(void)
+{
+
+  if(is_capturing_) return;
+
+  unsigned int i;
+  enum v4l2_buf_type type;
+
+  switch (io_)
+  {
+    case IO_METHOD_READ:
+      /* Nothing to do. */
+      break;
+
+    case IO_METHOD_MMAP:
+      for (i = 0; i < n_buffers_; ++i)
+      {
+        struct v4l2_buffer buf;
+
+        CLEAR(buf);
+
+        buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buf.memory = V4L2_MEMORY_MMAP;
+        buf.index = i;
+
+        if (-1 == xioctl(fd_, VIDIOC_QBUF, &buf))
+          errno_exit("VIDIOC_QBUF");
+      }
+
+      type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+
+      if (-1 == xioctl(fd_, VIDIOC_STREAMON, &type))
+        errno_exit("VIDIOC_STREAMON");
+
+      break;
+
+    case IO_METHOD_USERPTR:
+      for (i = 0; i < n_buffers_; ++i)
+      {
+        struct v4l2_buffer buf;
+
+        CLEAR(buf);
+
+        buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+        buf.memory = V4L2_MEMORY_USERPTR;
+        buf.index = i;
+        buf.m.userptr = (unsigned long)buffers_[i].start;
+        buf.length = buffers_[i].length;
+
+        if (-1 == xioctl(fd_, VIDIOC_QBUF, &buf))
+          errno_exit("VIDIOC_QBUF");
+      }
+
+      type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+
+      if (-1 == xioctl(fd_, VIDIOC_STREAMON, &type))
+        errno_exit("VIDIOC_STREAMON");
+
+      break;
+  }
