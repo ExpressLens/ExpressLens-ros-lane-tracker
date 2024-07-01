@@ -1031,3 +1031,204 @@ void UsbCam::start(const std::string& dev, io_method io_method,
     pixelformat_ = V4L2_PIX_FMT_RGB24;
   }
   else if (pixel_format == PIXEL_FORMAT_GREY)
+  {
+    pixelformat_ = V4L2_PIX_FMT_GREY;
+    monochrome_ = true;
+  }
+  else
+  {
+    ROS_ERROR("Unknown pixel format.");
+    exit(EXIT_FAILURE);
+  }
+
+  open_device();
+  init_device(image_width, image_height, framerate);
+  start_capturing();
+
+  image_ = (camera_image_t *)calloc(1, sizeof(camera_image_t));
+
+  image_->width = image_width;
+  image_->height = image_height;
+  image_->bytes_per_pixel = 3;      //corrected 11/10/15 (BYTES not BITS per pixel)
+
+  image_->image_size = image_->width * image_->height * image_->bytes_per_pixel;
+  image_->is_new = 0;
+  image_->image = (char *)calloc(image_->image_size, sizeof(char));
+  memset(image_->image, 0, image_->image_size * sizeof(char));
+}
+
+void UsbCam::shutdown(void)
+{
+  stop_capturing();
+  uninit_device();
+  close_device();
+
+  if (avcodec_context_)
+  {
+    avcodec_close(avcodec_context_);
+    av_free(avcodec_context_);
+    avcodec_context_ = NULL;
+  }
+  if (avframe_camera_)
+    av_free(avframe_camera_);
+  avframe_camera_ = NULL;
+  if (avframe_rgb_)
+    av_free(avframe_rgb_);
+  avframe_rgb_ = NULL;
+  if(image_)
+    free(image_);
+  image_ = NULL;
+}
+
+void UsbCam::grab_image(sensor_msgs::Image* msg)
+{
+  // grab the image
+  grab_image();
+  // stamp the image
+  msg->header.stamp = ros::Time::now();
+  // fill the info
+  if (monochrome_)
+  {
+    fillImage(*msg, "mono8", image_->height, image_->width, image_->width,
+        image_->image);
+  }
+  else
+  {
+    fillImage(*msg, "rgb8", image_->height, image_->width, 3 * image_->width,
+        image_->image);
+  }
+}
+
+void UsbCam::grab_image()
+{
+  fd_set fds;
+  struct timeval tv;
+  int r;
+
+  FD_ZERO(&fds);
+  FD_SET(fd_, &fds);
+
+  /* Timeout. */
+  tv.tv_sec = 5;
+  tv.tv_usec = 0;
+
+  r = select(fd_ + 1, &fds, NULL, NULL, &tv);
+
+  if (-1 == r)
+  {
+    if (EINTR == errno)
+      return;
+
+    errno_exit("select");
+  }
+
+  if (0 == r)
+  {
+    ROS_ERROR("select timeout");
+    exit(EXIT_FAILURE);
+  }
+
+  read_frame();
+  image_->is_new = 1;
+}
+
+// enables/disables auto focus
+void UsbCam::set_auto_focus(int value)
+{
+  struct v4l2_queryctrl queryctrl;
+  struct v4l2_ext_control control;
+
+  memset(&queryctrl, 0, sizeof(queryctrl));
+  queryctrl.id = V4L2_CID_FOCUS_AUTO;
+
+  if (-1 == xioctl(fd_, VIDIOC_QUERYCTRL, &queryctrl))
+  {
+    if (errno != EINVAL)
+    {
+      perror("VIDIOC_QUERYCTRL");
+      return;
+    }
+    else
+    {
+      ROS_INFO("V4L2_CID_FOCUS_AUTO is not supported");
+      return;
+    }
+  }
+  else if (queryctrl.flags & V4L2_CTRL_FLAG_DISABLED)
+  {
+    ROS_INFO("V4L2_CID_FOCUS_AUTO is not supported");
+    return;
+  }
+  else
+  {
+    memset(&control, 0, sizeof(control));
+    control.id = V4L2_CID_FOCUS_AUTO;
+    control.value = value;
+
+    if (-1 == xioctl(fd_, VIDIOC_S_CTRL, &control))
+    {
+      perror("VIDIOC_S_CTRL");
+      return;
+    }
+  }
+}
+
+/**
+* Set video device parameter via call to v4l-utils.
+*
+* @param param The name of the parameter to set
+* @param param The value to assign
+*/
+void UsbCam::set_v4l_parameter(const std::string& param, int value)
+{
+  set_v4l_parameter(param, boost::lexical_cast<std::string>(value));
+}
+/**
+* Set video device parameter via call to v4l-utils.
+*
+* @param param The name of the parameter to set
+* @param param The value to assign
+*/
+void UsbCam::set_v4l_parameter(const std::string& param, const std::string& value)
+{
+  // build the command
+  std::stringstream ss;
+  ss << "v4l2-ctl --device=" << camera_dev_ << " -c " << param << "=" << value << " 2>&1";
+  std::string cmd = ss.str();
+
+  // capture the output
+  std::string output;
+  int buffer_size = 256;
+  char buffer[buffer_size];
+  FILE *stream = popen(cmd.c_str(), "r");
+  if (stream)
+  {
+    while (!feof(stream))
+      if (fgets(buffer, buffer_size, stream) != NULL)
+        output.append(buffer);
+    pclose(stream);
+    // any output should be an error
+    if (output.length() > 0)
+      ROS_WARN("%s", output.c_str());
+  }
+  else
+    ROS_WARN("usb_cam_node could not run '%s'", cmd.c_str());
+}
+
+UsbCam::io_method UsbCam::io_method_from_string(const std::string& str)
+{
+  if (str == "mmap")
+    return IO_METHOD_MMAP;
+  else if (str == "read")
+    return IO_METHOD_READ;
+  else if (str == "userptr")
+    return IO_METHOD_USERPTR;
+  else
+    return IO_METHOD_UNKNOWN;
+}
+
+UsbCam::pixel_format UsbCam::pixel_format_from_string(const std::string& str)
+{
+    if (str == "yuyv")
+      return PIXEL_FORMAT_YUYV;
+    else if (str == "uyvy")
