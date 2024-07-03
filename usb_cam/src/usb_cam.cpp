@@ -1232,3 +1232,17 @@ UsbCam::pixel_format UsbCam::pixel_format_from_string(const std::string& str)
     if (str == "yuyv")
       return PIXEL_FORMAT_YUYV;
     else if (str == "uyvy")
+      return PIXEL_FORMAT_UYVY;
+    else if (str == "mjpeg")
+      return PIXEL_FORMAT_MJPEG;
+    else if (str == "yuvmono10")
+      return PIXEL_FORMAT_YUVMONO10;
+    else if (str == "rgb24")
+      return PIXEL_FORMAT_RGB24;
+    else if (str == "grey")
+      return PIXEL_FORMAT_GREY;
+    else
+      return PIXEL_FORMAT_UNKNOWN;
+}
+
+}
