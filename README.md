@@ -3,4 +3,11 @@
 ![robot model](img/robot_model.jpg)
 ## System Requirements
 - Ubuntu 18.04 LTS
-- ROS Melodic (Note: other version
+- ROS Melodic (Note: other versions are not supported)
+## System Architecture
+![system architecture diagram](img/system_architecture_diagram.jpeg)
+## Included Packages
+- lane_detect_follower
+- usb_cam
+## Demonstration Video
+(To be updated soon)
